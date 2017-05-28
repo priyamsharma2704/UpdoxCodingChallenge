@@ -11,28 +11,32 @@ public class primeNum implements PrimeNumberGenerator{
 	static Scanner fin;	
 	int startValue, endingValue;	
 	
+	
+	/*Function to find the prime number between startValue and endingValue
+	 * also swaps the range if startValue is greater than endingValue
+	 * and if one of the range number is negative then throws a error message. 
+	*/
 	@Override
 	public List<Integer> generate(int startValue, int endingValue) {
 		// TODO Auto-generated method stub
-		//System.out.println("inside GENERATE start= "+startValue+" " + "end = "+endingValue+"\n");
 		int i;
 		List<Integer> primeNum = new ArrayList<Integer>();
-		//System.out.println(start+" " + end+"\n");
-	    if(startValue > endingValue) {
+		if(startValue > endingValue && startValue > -1 && endingValue > -1) {
 	            int temp = startValue;
 	            startValue = endingValue;
 	            endingValue = temp;
 	    }
-	    int count = 0;
-	    System.out.println(startValue+" " + endingValue+"\n");
+	    if(startValue < -1 || endingValue < -1)
+	    {
+	    	System.out.println("Range cannot have negative numbers");
+	    	return null;
+	    }
+	    
 	    for (i = startValue; i<=endingValue; i++){
 	            if(isPrime(i)){
-	                    //System.out.println(i);
-	                    count++;
-	                    primeNum.add(i);
+	            	primeNum.add(i);
 	            }
 	    }
-	    System.out.println("count= "+count);
 	    Iterator<Integer> myListIterator = primeNum.iterator(); 
 	    while (myListIterator.hasNext()) {
 	        int num = myListIterator.next(); 	        
@@ -40,7 +44,9 @@ public class primeNum implements PrimeNumberGenerator{
 	    }
 		return null;
 	}
-
+/*
+ * function to check whether a number is prime or not
+ */
 	@Override
 	public boolean isPrime(int value) {
 		// TODO Auto-generated method stub
@@ -52,22 +58,19 @@ public class primeNum implements PrimeNumberGenerator{
 	    else if(value == 1 )
 	    	return false;
 
-	    for (j = 3; j < Math.sqrt(value); j += 2)
+	    for (j = 3; j < value/2; j += 2)
 	            if (value % j == 0)
 	                    return false;
-		return true;
-		
+		return true;		
 	}
-
+/*
+ * function to read the range values from the input file
+ */
 	public void readRange() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		fin = new Scanner(new File("input.txt"));
 		this.startValue =  fin.nextInt();
 		this.endingValue = fin.nextInt();
-		System.out.println("start= "+this.startValue+" " + "end = "+this.endingValue+"\n");
 	}
-	
-	
-
 }
 
