@@ -35,11 +35,11 @@ ProviderList.controller('Controller', function ($scope, $http){
             /*
             To clear the input fields once SUBMIT button is clicked.
             */
-            $scope.people.last_name=' ';
-            $scope.people.first_name=' ';
-            $scope.people.email_address='';
-            $scope.people.specialty='';
-            $scope.people.practice_name='';
+            $scope.last_name=' ';
+            $scope.first_name=' ';
+            $scope.email_address='';
+            $scope.specialty='';
+            $scope.practice_name='';
         };
 
         /*
