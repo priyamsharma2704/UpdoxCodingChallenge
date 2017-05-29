@@ -21,6 +21,8 @@ public class primeNum implements PrimeNumberGenerator{
 		// TODO Auto-generated method stub
 		int i;
 		List<Integer> primeNum = new ArrayList<Integer>();
+		System.out.println("Starting Value = " + startValue );
+		System.out.println("Ending Value = " + endingValue );
 		if(startValue > endingValue && startValue > -1 && endingValue > -1) {
 	            int temp = startValue;
 	            startValue = endingValue;
@@ -28,7 +30,7 @@ public class primeNum implements PrimeNumberGenerator{
 	    }
 	    if(startValue < -1 || endingValue < -1)
 	    {
-	    	System.out.println("Range cannot have negative numbers");
+	    	System.out.println("\nRange cannot have negative numbers");
 	    	return null;
 	    }
 	    
