@@ -1,5 +1,3 @@
-window.onload = function(){
-
 	var quickAddFormDiv = document.querySelector('.quickaddForm');	
 	var AddBtn = document.getElementById('Add');
 	// Form Fields
@@ -9,103 +7,146 @@ window.onload = function(){
 	var specialty = document.getElementById('specialty');
 	var practicename = document.getElementById('practicename');
 	// Divs etc.
-	var addBookDiv = document.querySelector('.addbook');
-	
-	var addressBook = [];
+	var providerListDiv = document.querySelector('.providerListDiv');
+	var body = document.querySelector('.body');
+	var providerList = [];
 	var people;
 	localStorage.clear();
-	//--------------------------------------------------------------------
+	
 	//To display the contents of JSON file
 	var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-			    if (this.readyState == 4 && this.status == 200) {
-			       var response = JSON.parse(xhttp.responseText);
-			       people = response.people;
-			       //var output = "";
-			       var str1 = '';
-					for(var i = 0; i <people.length;i++){
-						str1 += '<div id="entry">';					
-						str1 += '<div id="name"><p>' + people[i].last_name +', '+people[i].first_name+ '</p></div>';
-						str1 += '<div id="email"><p>' + people[i].email_address + '</p></div>';
-						str1 += '<div id="practicename"><p>' + people[i].practice_name + '</p></div>';					
-						str1 += '<div id="specialty"><p>' + people[i].specialty + '</p></div>';
-						str1 += '<div id="del"><a href="#" class="delbutton" data-id="' + i + '">Delete</a></div>';
-						}
-					for(var i = 0; i < people.length;i++){
-						var obj = new jsonStructure(people[i].last_name,people[i].first_name,people[i].email_address,people[i].specialty,people[i].practice_name);					
-						addressBook.push(obj);						
-						localStorage['addbook'] = JSON.stringify(addressBook);
-					}
-
-					document.getElementsByClassName("addbook")[0].innerHTML = str1;
-
-				}
-			};
-			xhttp.open("GET", "people.json", true);
-			xhttp.send();
-			//------------------------------------------------------------------------------
-			
-			
-			AddBtn.addEventListener("click", addToBook);
-			//var addressBook = [];
-			addBookDiv.addEventListener("click", removeEntry);
-			
-			function jsonStructure(lastname,firstname,email,specialty,practicename){
-				this.lastname = lastname;
-				this.lastname += ", "+firstname;				
-				this.email = email;
-				this.specialty = specialty;
-				this.practicename = practicename;
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+			var response = JSON.parse(xhttp.responseText);
+			people = response.people;
+			var str1  = '';
+			for(var i = 0; i <people.length;i++){
+				str1 += '<tr>';
+				str1 += '<td class="lastname"><p>' + people[i].last_name +', '+people[i].first_name+ '</p></td>';					
+				str1 += '<td class="email"><p>' + people[i].email_address +  '</p></td>';
+				str1 += '<td class="practicename"><p>' + people[i].practice_name + '</p></td>';					
+				str1 += '<td class="specialty"><p>' + people[i].specialty + '</p></td>';
+				str1 += '<td class="del"><a href="#" class="delbutton" data-id="' + i + '">Delete</a></td>';
+				str1 += '</tr>';
 			}
-			function addToBook(){
-				var isNull = lastname.value!='' && firstname.value!='' && email.value!='' && specialty.value!='' && practicename.value!='';
-				if(isNull){
-					// format the input into a valid JSON structure
-					var obj = new jsonStructure(lastname.value,firstname.value,email.value,specialty.value,practicename.value);					
-					addressBook.push(obj);
-					localStorage['addbook'] = JSON.stringify(addressBook);
-					console.log(localStorage['addbook']);
-					clearForm();
-					showaddressBook();
-				}
+			
+			for(var i = 0; i < people.length;i++){
+				var obj = new jsonStructure(people[i].last_name,people[i].first_name,people[i].email_address,people[i].specialty,people[i].practice_name);					
+				providerList.push(obj);							
+				localStorage['providerListLocalStrorage'] = JSON.stringify(providerList);
+			}			
+			document.getElementsByClassName("body")[0].innerHTML = str1;
 			}
-			function removeEntry(e){
-			// Remove an entry from the addressBook
+		};
+		xhttp.open("GET", "people.json", true);
+		xhttp.send();
+		
+		AddBtn.addEventListener("click", addToBook);
+		providerListDiv.addEventListener("click", removeEntry);
+			
+		/*
+		Function to convert the data into JSON format
+		*/
+		function jsonStructure(lastname,firstname,email,specialty,practicename){
+			this.lastname = lastname;
+			this.lastname += ", "+firstname;				
+			this.email = email;
+			this.specialty = specialty;
+			this.practicename = practicename;
+		}
+
+		/*
+		Function to read the data from input fields,
+		convert it into JSON format	and store in local storage.
+		*/
+		function addToBook(){
+			var isNull = lastname.value!='' && firstname.value!='' && email.value!='' && specialty.value!='' && practicename.value!='';
+			if(isNull){
+				var obj = new jsonStructure(lastname.value,firstname.value,email.value,specialty.value,practicename.value);					
+				providerList.push(obj);
+				localStorage['providerListLocalStrorage'] = JSON.stringify(providerList);
+				clearForm();
+				showproviderList();
+			}
+		}
+
+		/*
+		Function to remove an entry when the DELETE button is clicked
+		*/
+		function removeEntry(e){
+			if(e.target.classList.contains('delbutton')){
+				var remID = e.target.getAttribute('data-id');					
+				providerList.splice(remID,1);
+				localStorage['providerListLocalStrorage'] = JSON.stringify(providerList);
+				showproviderList();
+			}
+		}
+
+		/*
+		Function to clear the form once the SUBMIT button is clicked
+		*/
+		function clearForm(){
+			var formFields = document.querySelectorAll('.formFields');
+			for(var i in formFields){
+				formFields[i].value = '';
+			}
+		}
+
+		/*
+		Function to display the data 
+		*/
+		function showproviderList(){
+			if(localStorage['providerListLocalStrorage'] === undefined){			
+				localStorage['providerListLocalStrorage'] = '';
+			 }
+			else{	
+				console.log(localStorage['providerListLocalStrorage']);				
+				providerList = JSON.parse(localStorage['providerListLocalStrorage']);
+				body.innerHTML = '';
+				var str = '';
+				for(var i = 0; i <providerList.length;i++){
+					str += '<tr>';
+					str += '<td class="lastname"><p>' + providerList[i].lastname +'</p></td>';					
+					str += '<td class="email"><p>' + providerList[i].email +  '</p></td>';
+					str += '<td class="practicename"><p>' + providerList[i].practicename + '</p></td>';					
+					str += '<td class="specialty"><p>' + providerList[i].specialty + '</p></td>';
+					str += '<td class="del"><a href="#" class="delbutton" data-id="' + i + '">Delete</a></td>';
+					str += '</tr>';
+				}
+				str += '</tbody></table>';
+				document.getElementsByClassName("body")[0].innerHTML = str;
 				
-				if(e.target.classList.contains('delbutton')){
-					var remID = e.target.getAttribute('data-id');					
-					addressBook.splice(remID,1);
-					localStorage['addbook'] = JSON.stringify(addressBook);
-					showaddressBook();
-				}
 			}
-			function clearForm(){
-				var formFields = document.querySelectorAll('.formFields');
-				for(var i in formFields){
-					formFields[i].value = '';
-				}
-			}
-			function showaddressBook(){
-				if(localStorage['addbook'] === undefined){
-					localStorage['addbook'] = '';
-				} else {
-					addressBook = JSON.parse(localStorage['addbook']);
-					console.log(addressBook);
-					addBookDiv.innerHTML = '';
-					var str = '';
-					for(var i = 0; i <addressBook.length;i++){
+		}
 
-						str += '<div id="entry">';					
-						str += '<div id="name"><p>' + addressBook[i].lastname + '</p></div>';
-						str += '<div id="email"><p>' + addressBook[i].email + '</p></div>';
-						str += '<div id="practicename"><p>' + addressBook[i].practicename + '</p></div>';					
-						str += '<div id="specialty"><p>' + addressBook[i].specialty + '</p></div>';
-						str += '<div id="del"><a href="#" class="delbutton" data-id="' + i + '">Delete</a></div>';
-						console.log(str);
-					}
-					document.getElementsByClassName("addbook")[0].innerHTML = str;
-				}
-			}
 
-			showaddressBook();
+$(document).ready(function() 
+{  
+  $("th").click(function() {
+	sortTable($(".sortable"), $(this));
+  });  
+}
+);
+
+function sortTable(table, th) {
+	var rows = $(table).find("tr:gt(0)").toArray().sort(compare($(th).index()));	
+	if ($(th).hasClass("ascending")) {
+      $(th).removeClass("ascending").addClass("descending");
+	  rows = rows.reverse();
+	}
+	else {
+	  $(th).removeClass("descending").addClass("ascending");
+	}
+	
+	for (var i = 0; i < rows.length; i++) {
+		$(table).append(rows[i]);
+	}		
+}
+
+function compare(index) {
+	return function(a, b) {
+		var valA = $(a).children("td").eq(index).html();
+		var valB = $(b).children("td").eq(index).html();
+		return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+	}
 }

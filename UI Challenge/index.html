@@ -2,42 +2,53 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>sample</title>
+<title>Provider's List</title>
 <link rel="stylesheet" href="style/style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>	
+<script type="text/javascript" src="jquery.tablesorter.js"></script>
+<script src="sorttable.js"></script>
 </head>
 <body>
 <div class="container">
 	<div class="title">
-			<h1>Provider's List</h1>
+			<h1>Provider Directory</h1>
+			<h5>v2.0</h5>
 	</div>
 	<div class="quickaddForm">
+			<label>Create Provider</label>
 			<label for="lastname">Last Name</label><input type="text" id="lastname" class="formFields">
 			<label for="firstname">First Name</label><input type="text" id="firstname" class="formFields">
-			<label for="email">E-Mail</label><input type="text" id="email"  class="formFields">
-			<label for="specialty">Speaciality</label><input type="text" id="specialty" class="formFields">
+			<label for="email">Email Address</label><input type="text" id="email"  class="formFields">
+			<label for="specialty">Specialty</label><input type="text" id="specialty" class="formFields">
 			<label for="practicename">Practice Name</label><input type="text" id="practicename" class="formFields">
 			<br><br>
-			<button id="Add">Add Now</button>
+			<button id="Add">Submit</button>
 	</div>
-	<div class="sort">
-	<p>Sort: 
-		<select>		  	
-		  	<option value="By Name">By Name</option>
-		  	<option value="By Email">By Email</option>
-		  	<option value="By Practice Name">By Practice Name</option>
-		   	<option value="By specialty">By Specialty</option>
-		</select></p>
-	</div>
-	<div class="addbook">
 	
-			 <div id="entry">
-				
-				<div id="name"><p></p></div>
-				<div id="email"><p></p></div>													
-				<div id="practicename"><p></p></div>
-				<div id="specialty"><p></p></div>
-				<div id="del"><a href="#">Delete</a></div>
-			</div>
+	<div class="providerList">
+		<p>Provider List</p>
+	</div>
+	<div class="providerListDiv"> 
+		<table class="sortable">
+			<tr>
+				<th id="hName">Name</th>
+				<th id="hEmail">Email</th>
+				<th id="hPracticeName">Practice Name</th>
+				<th id="hSpecialty">Specialty</th>
+				<th id="hDel"></th>
+			</tr>
+		<tbody class= "body">	
+			
+			<tr>
+				<td class="lastname"><p></p></td>
+				<td class="email"><p></p></td>						
+				<td class="practicename"><p></p></td>
+				<td class="specialty"><p></p></td>
+				<td class="del"><a href="#">Delete</a></td>
+			</tr>		
+		
+		</tbody>	
+		</table>			
 	</div> 
 </div>
 <script src="script/script.js"></script>
